@@ -1,0 +1,8 @@
+django
+djangorestframework
+psycopg2-binary
+drf-yasg
+python-decouple
+djangorestframework-simplejwt
+gunicorn
+whitenoise
