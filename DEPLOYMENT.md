@@ -76,9 +76,13 @@ CORS_ALLOWED_ORIGINS=https://your-frontend.vercel.app
 CORS_ALLOW_ALL_ORIGINS=False
 ```
 
-**⚠️ Important**: 
-- CORS_ALLOWED_ORIGINS should **NOT** include trailing slashes or paths
-- Use format: `https://your-frontend.vercel.app` (NOT `https://your-frontend.vercel.app/`)
+**⚠️ Important Notes**: 
+- **CORS_ALLOWED_ORIGINS** should **NOT** include trailing slashes or paths
+  - ✅ Use: `https://your-frontend.vercel.app`
+  - ❌ Don't use: `https://your-frontend.vercel.app/`
+- **ALLOWED_HOSTS**: Include your Render URL (e.g., `job-portal-backend-rbo1.onrender.com`)
+- **Auto-detection**: The code automatically adds Render hostname if `RENDER_EXTERNAL_HOSTNAME` is set
+- After creating your Render service, you'll get a URL like `job-portal-backend-xxxxx.onrender.com` - add this to ALLOWED_HOSTS
 
 # Supabase Database Configuration
 USE_SUPABASE_DB=True

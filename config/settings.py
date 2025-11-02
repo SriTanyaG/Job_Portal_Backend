@@ -9,7 +9,18 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-key')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 # ALLOWED_HOSTS for production - set via environment variable or use default
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+allowed_hosts_str = config('ALLOWED_HOSTS', default='localhost,127.0.0.1')
+ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_str.split(',') if host.strip()]
+
+# For Render: automatically add Render hostname if available
+# Render sets RENDER_EXTERNAL_HOSTNAME environment variable
+import os
+render_hostname = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if render_hostname and render_hostname not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(render_hostname)
+
+# Clean up duplicates and empty strings
+ALLOWED_HOSTS = list(set([h for h in ALLOWED_HOSTS if h]))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
