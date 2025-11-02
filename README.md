@@ -488,18 +488,9 @@ This is a personal project. For issues or questions, please open an issue on Git
 
 - **Repository**: https://github.com/SriTanyaG/Job_Portal_Backend
 - **API Documentation**: `/swagger/` (when running locally or on Render)
-- **Deployment Guide**: [DEPLOYMENT.md](./DEPLOYMENT.md)
 
 ---
 
-## 📞 Support
-
-For deployment issues or questions:
-1. Check [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed setup instructions
-2. Review API documentation at `/swagger/`
-3. Open an issue on GitHub
-
----
 
 ## ✨ Recent Updates
 
@@ -509,6 +500,5 @@ For deployment issues or questions:
 - ✅ Loading indicators for all operations
 - ✅ Resume modal viewer
 - ✅ Auto-display applications on dashboard
-- ✅ Currency format changed to Rs. (Indian Rupees)
 - ✅ Deployment configuration for Vercel and Render
 - ✅ CORS and ALLOWED_HOSTS auto-configuration
