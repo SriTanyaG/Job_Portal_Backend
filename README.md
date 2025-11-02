@@ -219,10 +219,6 @@ Frontend will be available at: `http://localhost:5173`
 - **Backend**: Render (automatic deployments from GitHub)
 - **Database**: Supabase PostgreSQL
 
-### Quick Deployment Steps
-
-**For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md)**
-
 #### Backend (Render)
 1. Connect GitHub repository to Render
 2. Create Web Service
