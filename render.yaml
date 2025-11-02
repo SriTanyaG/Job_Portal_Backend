@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: job-portal-backend
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && python manage.py migrate
+    startCommand: gunicorn config.wsgi:application
+    envVars:
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        generateValue: true
+      - key: SECRET_KEY
+        generateValue: true
+      - key: USE_SUPABASE_DB
+        value: True
+      # Add these from Render Dashboard after creating:
+      # - key: SUPABASE_USER
+      # - key: SUPABASE_HOST
+      # - key: SUPABASE_PORT
+      # - key: SUPABASE_USE_SSL
+      # - key: SUPABASE_DB
+      # - key: SUPABASE_PASSWORD
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+    healthCheckPath: /api/jobs/
+
