@@ -1,0 +1,239 @@
+.job-detail-page {
+  min-height: 70vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f5ff 0%, #ffffff 100%);
+}
+
+.job-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.job-detail-loading,
+.job-detail-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 1rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary-violet);
+  font-weight: 500;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  transform: translateX(-4px);
+}
+
+.job-detail-header {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+}
+
+.job-detail-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-dark);
+  margin: 0 0 1.5rem 0;
+}
+
+.job-detail-meta {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  font-size: 1rem;
+  color: var(--text-gray);
+}
+
+.job-detail-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.job-detail-content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+}
+
+.job-detail-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.job-section {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.job-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-dark);
+  margin: 0 0 1.5rem 0;
+}
+
+.job-description {
+  line-height: 1.8;
+  color: var(--text-gray);
+}
+
+.job-description p {
+  margin-bottom: 1rem;
+}
+
+.job-description p:last-child {
+  margin-bottom: 0;
+}
+
+.job-detail-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.apply-card,
+.job-info-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 100px;
+}
+
+.apply-card h3,
+.job-info-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-dark);
+  margin: 0 0 1.25rem 0;
+}
+
+.apply-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.apply-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.apply-form label {
+  font-weight: 500;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+
+.apply-form input[type="file"] {
+  padding: 0.75rem;
+  border: 2px dashed var(--secondary-lavender);
+  border-radius: 8px;
+  background: var(--secondary-lavender);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.apply-form input[type="file"]:hover {
+  border-color: var(--primary-violet);
+  background: rgba(232, 230, 255, 0.5);
+}
+
+.btn-apply {
+  background: var(--primary-violet);
+  color: var(--white);
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+}
+
+.btn-apply:hover:not(:disabled) {
+  background: #5a52e0;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-apply:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.job-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--secondary-lavender);
+}
+
+.job-info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  color: var(--text-gray);
+  font-weight: 500;
+}
+
+.info-value {
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+  .job-detail-content {
+    grid-template-columns: 1fr;
+  }
+
+  .apply-card {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .job-detail-page {
+    padding: 1rem;
+  }
+
+  .job-detail-header {
+    padding: 1.5rem;
+  }
+
+  .job-detail-title {
+    font-size: 2rem;
+  }
+
+  .job-detail-meta {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .job-section {
+    padding: 1.5rem;
+  }
+}
+

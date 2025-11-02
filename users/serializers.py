@@ -1,9 +1,10 @@
-
 from rest_framework import serializers
 from .models import User
 
+
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    
     class Meta:
         model = User
         fields = ('id', 'email', 'password', 'is_employer', 'is_applicant')
@@ -16,33 +17,33 @@ class UserSerializer(serializers.ModelSerializer):
             is_applicant=validated_data.get('is_applicant', False)
         )
         return user
-from rest_framework import serializers
-from .models import User
-from rest_framework import serializers
-from .models import User
 
-class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
 
-    class Meta:
-        model = User
-        fields = ['email', 'password']  # Don't expose role fields here
+class RegisterRequestSerializer(serializers.Serializer):
+    """Serializer for user registration request"""
+    email = serializers.EmailField(required=True, help_text="User's email address")
+    password = serializers.CharField(required=True, write_only=True, help_text="User's password")
+    is_employer = serializers.BooleanField(required=False, default=False, help_text="Register as employer")
+    is_applicant = serializers.BooleanField(required=False, help_text="Register as applicant (defaults to True if not employer)")
 
-    def create(self, validated_data):
-        request = self.context.get('request')
-        user = User(
-            email=validated_data['email'],
-            is_employer=True,  # Automatically mark as employer
-            is_applicant=False
-        )
-        user.set_password(validated_data['password'])
 
-        # If the request is made by admin/superuser (staff user)
-        if request and request.user and request.user.is_staff:
-            # Let admin decide roles via validated_data if needed
-            user.is_employer = validated_data.get('is_employer', False)
-            user.is_applicant = validated_data.get('is_applicant', False)
+class RegisterResponseSerializer(serializers.Serializer):
+    """Serializer for user registration response"""
+    message = serializers.CharField()
+    user_id = serializers.IntegerField()
+    email = serializers.EmailField()
+    role = serializers.ListField(child=serializers.CharField())
 
-        user.save()
-        return user
 
+class LoginRequestSerializer(serializers.Serializer):
+    """Serializer for user login request"""
+    email = serializers.EmailField(required=True, help_text="User's email address")
+    password = serializers.CharField(required=True, write_only=True, help_text="User's password")
+
+
+class LoginResponseSerializer(serializers.Serializer):
+    """Serializer for user login response"""
+    message = serializers.CharField()
+    user_id = serializers.IntegerField()
+    email = serializers.EmailField()
+    role = serializers.ListField(child=serializers.CharField())

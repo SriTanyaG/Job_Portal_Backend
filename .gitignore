@@ -9,15 +9,42 @@ __pycache__/
 db.sqlite3
 /static/
 media/
+staticfiles/
 
-# VSCode
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Node modules (Frontend)
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# IDE
 .vscode/
+.idea/
+*.swp
+*.swo
 
 # macOS
 .DS_Store
 
-# Env
+# Env files
 .env
+.env.local
+.env.*.local
 
-# Docker
+# Logs
 *.log
+
+# Resumes (old storage - now in database)
+resumes/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
