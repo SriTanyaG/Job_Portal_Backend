@@ -10,14 +10,37 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 # ALLOWED_HOSTS for production - set via environment variable or use default
 allowed_hosts_str = config('ALLOWED_HOSTS', default='localhost,127.0.0.1')
-ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_str.split(',') if host.strip()]
+ALLOWED_HOSTS = []
+
+# Parse and clean up ALLOWED_HOSTS - remove protocols, paths, and trailing slashes
+for host in allowed_hosts_str.split(','):
+    host = host.strip()
+    if not host:
+        continue
+    
+    # Remove protocol (http:// or https://)
+    if '://' in host:
+        host = host.split('://', 1)[1]
+    
+    # Remove paths and query strings (everything after first / or ?)
+    host = host.split('/')[0].split('?')[0]
+    
+    # Remove trailing slashes
+    host = host.rstrip('/')
+    
+    if host and host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(host)
 
 # For Render: automatically add Render hostname if available
 # Render sets RENDER_EXTERNAL_HOSTNAME environment variable
 import os
 render_hostname = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if render_hostname and render_hostname not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append(render_hostname)
+if render_hostname:
+    # Clean up render hostname (remove protocol if present)
+    if '://' in render_hostname:
+        render_hostname = render_hostname.split('://', 1)[1].split('/')[0]
+    if render_hostname and render_hostname not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(render_hostname)
 
 # Clean up duplicates and empty strings
 ALLOWED_HOSTS = list(set([h for h in ALLOWED_HOSTS if h]))

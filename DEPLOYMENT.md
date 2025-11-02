@@ -71,18 +71,23 @@ In Render dashboard, go to **Environment** tab and add:
 ```bash
 DEBUG=False
 SECRET_KEY=your-secret-key-here-generate-a-random-one
-ALLOWED_HOSTS=your-render-app.onrender.com,your-frontend.vercel.app
-CORS_ALLOWED_ORIGINS=https://your-frontend.vercel.app
+ALLOWED_HOSTS=job-portal-backend-rbo1.onrender.com,job-portal-backend-three-pi.vercel.app
+CORS_ALLOWED_ORIGINS=https://job-portal-backend-three-pi.vercel.app
 CORS_ALLOW_ALL_ORIGINS=False
 ```
 
-**⚠️ Important Notes**: 
-- **CORS_ALLOWED_ORIGINS** should **NOT** include trailing slashes or paths
-  - ✅ Use: `https://your-frontend.vercel.app`
-  - ❌ Don't use: `https://your-frontend.vercel.app/`
-- **ALLOWED_HOSTS**: Include your Render URL (e.g., `job-portal-backend-rbo1.onrender.com`)
-- **Auto-detection**: The code automatically adds Render hostname if `RENDER_EXTERNAL_HOSTNAME` is set
-- After creating your Render service, you'll get a URL like `job-portal-backend-xxxxx.onrender.com` - add this to ALLOWED_HOSTS
+**⚠️ CRITICAL - Correct Format**:
+
+**ALLOWED_HOSTS** format (NO protocol, NO trailing slash):
+- ✅ Correct: `job-portal-backend-rbo1.onrender.com,job-portal-backend-three-pi.vercel.app`
+- ❌ Wrong: `https://job-portal-backend-rbo1.onrender.com,https://job-portal-backend-three-pi.vercel.app`
+
+**CORS_ALLOWED_ORIGINS** format (WITH protocol, NO trailing slash, NO path):
+- ✅ Correct: `https://job-portal-backend-three-pi.vercel.app`
+- ❌ Wrong: `https://job-portal-backend-three-pi.vercel.app/`
+- ❌ Wrong: `job-portal-backend-three-pi.vercel.app` (missing https://)
+
+**Note**: The code automatically cleans up ALLOWED_HOSTS (removes protocols and paths), so you can include them, but it's cleaner to use the correct format.
 
 # Supabase Database Configuration
 USE_SUPABASE_DB=True
