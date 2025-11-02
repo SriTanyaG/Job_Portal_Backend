@@ -28,13 +28,18 @@ This guide covers deploying the Job Portal application to **Vercel (Frontend)** 
 
 ### Step 2: Configure Environment Variables
 
-In Vercel project settings, add:
+In Vercel project settings → **Environment Variables**, add:
 
 ```
-VITE_API_URL=https://your-render-app.onrender.com/api
+VITE_API_URL=https://job-portal-backend-rbo1.onrender.com/api
 ```
 
-Replace `your-render-app` with your actual Render backend URL (you'll get this after deploying backend).
+**⚠️ CRITICAL**: 
+- Include `/api` at the end!
+- ✅ Correct: `https://job-portal-backend-rbo1.onrender.com/api`
+- ❌ Wrong: `https://job-portal-backend-rbo1.onrender.com` (missing `/api`)
+
+**After adding, redeploy your Vercel project** to pick up the new environment variable.
 
 ### Step 3: Deploy
 
@@ -112,9 +117,16 @@ Click **"Create Web Service"** and wait for deployment.
 
 After deployment, note your Render URL (e.g., `https://job-portal-backend.onrender.com`)
 
-### Step 5: Update Frontend API URL
+### Step 5: Update Frontend API URL in Vercel
 
-Go back to Vercel and update the `VITE_API_URL` environment variable to your Render backend URL.
+1. Go to your Vercel project dashboard
+2. Navigate to **Settings** → **Environment Variables**
+3. Update or add `VITE_API_URL`:
+   ```
+   VITE_API_URL=https://job-portal-backend-rbo1.onrender.com/api
+   ```
+   **Important**: Must include `/api` at the end!
+4. **Redeploy** your Vercel project (or push a commit to trigger auto-deploy)
 
 ---
 
