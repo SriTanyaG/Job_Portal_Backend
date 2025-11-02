@@ -74,6 +74,11 @@ SECRET_KEY=your-secret-key-here-generate-a-random-one
 ALLOWED_HOSTS=your-render-app.onrender.com,your-frontend.vercel.app
 CORS_ALLOWED_ORIGINS=https://your-frontend.vercel.app
 CORS_ALLOW_ALL_ORIGINS=False
+```
+
+**⚠️ Important**: 
+- CORS_ALLOWED_ORIGINS should **NOT** include trailing slashes or paths
+- Use format: `https://your-frontend.vercel.app` (NOT `https://your-frontend.vercel.app/`)
 
 # Supabase Database Configuration
 USE_SUPABASE_DB=True

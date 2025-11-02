@@ -128,7 +128,23 @@ REST_FRAMEWORK = {
 
 # CORS Configuration for production
 CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=False, cast=bool)
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='').split(',') if config('CORS_ALLOWED_ORIGINS', default='') else []
+cors_allowed_origins_raw = config('CORS_ALLOWED_ORIGINS', default='')
+
+# Clean up CORS origins - remove trailing slashes and paths, only keep protocol + domain
+CORS_ALLOWED_ORIGINS = []
+if cors_allowed_origins_raw:
+    for origin in cors_allowed_origins_raw.split(','):
+        origin = origin.strip()
+        # Remove trailing slash and any path
+        origin = origin.rstrip('/')
+        # Extract just protocol + domain (remove any path)
+        if '://' in origin:
+            protocol, rest = origin.split('://', 1)
+            # Take only the domain part (before first /)
+            domain = rest.split('/')[0]
+            origin = f"{protocol}://{domain}"
+        if origin and origin not in CORS_ALLOWED_ORIGINS:
+            CORS_ALLOWED_ORIGINS.append(origin)
 
 # If CORS_ALLOW_ALL_ORIGINS is False but CORS_ALLOWED_ORIGINS is empty, allow all (for local dev)
 if not CORS_ALLOW_ALL_ORIGINS and not CORS_ALLOWED_ORIGINS:
