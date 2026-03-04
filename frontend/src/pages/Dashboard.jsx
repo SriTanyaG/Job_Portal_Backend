@@ -35,11 +35,10 @@ const Dashboard = () => {
     try {
       setLoading(true)
       if (isEmployer()) {
-        const jobsData = await jobsAPI.getAll()
-        // Filter jobs by current user (employer)
-        const myJobs = jobsData.filter((job) => job.employer === user.id)
-        setJobs(myJobs)
-        
+        // Server-side filter: only fetch this employer's jobs (not all jobs)
+        const jobsData = await jobsAPI.getAll({ employer: user.id })
+        setJobs(jobsData)
+
         // Fetch applications for employer's jobs
         const appsData = await applicationsAPI.getAll()
         const applicationsList = Array.isArray(appsData) ? appsData : (appsData.results || [])
@@ -57,14 +56,14 @@ const Dashboard = () => {
       setLoading(false)
     }
   }
-  
+
   const handleUpdateStatus = async (applicationId, newStatus) => {
     try {
       setUpdatingStatusId(applicationId)
       await applicationsAPI.update(applicationId, { status: newStatus })
       // Update local state instead of refetching all data (faster)
-      setApplications(prevApps => 
-        prevApps.map(app => 
+      setApplications(prevApps =>
+        prevApps.map(app =>
           app.id === applicationId ? { ...app, status: newStatus } : app
         )
       )
@@ -89,18 +88,18 @@ const Dashboard = () => {
       setJobFormData({ title: '', description: '', location: '', salary: '' })
       fetchData()
     } catch (error) {
-      const errorMessage = error.response?.data?.error || 
-                          error.response?.data?.detail || 
-                          Object.values(error.response?.data || {}).flat().join(', ') ||
-                          error.message || 
-                          'Failed to create job. Please try again.'
+      const errorMessage = error.response?.data?.error ||
+        error.response?.data?.detail ||
+        Object.values(error.response?.data || {}).flat().join(', ') ||
+        error.message ||
+        'Failed to create job. Please try again.'
       alert(errorMessage)
       console.error('Error creating job:', error.response?.data || error)
     } finally {
       setCreatingJob(false)
     }
   }
-  
+
   const handleViewResume = async (applicationId) => {
     try {
       setLoadingResumeId(applicationId)
@@ -118,7 +117,7 @@ const Dashboard = () => {
       setLoadingResumeId(null)
     }
   }
-  
+
   const closeResumeModal = () => {
     setResumeModal({ open: false, url: null })
   }
@@ -413,7 +412,7 @@ const Dashboard = () => {
           )}
         </div>
       </div>
-      
+
       {/* Resume Modal */}
       {resumeModal.open && resumeModal.url && (
         <div className="resume-modal-overlay" onClick={closeResumeModal}>

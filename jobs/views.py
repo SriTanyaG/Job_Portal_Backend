@@ -18,8 +18,15 @@ class JobViewSet(viewsets.ModelViewSet):
     permission_classes = [IsJobOwnerOrReadOnly]
 
     def get_queryset(self):
-        """Optimize queryset with select_related for employer field"""
-        return Job.objects.select_related('employer').all()
+        """Optimize queryset with select_related and support server-side filtering"""
+        queryset = Job.objects.select_related('employer').all()
+        
+        # Server-side filter: ?employer=<id> — so Dashboard doesn't fetch ALL jobs
+        employer_id = self.request.query_params.get('employer')
+        if employer_id:
+            queryset = queryset.filter(employer_id=employer_id)
+        
+        return queryset
 
     def perform_create(self, serializer):
         """

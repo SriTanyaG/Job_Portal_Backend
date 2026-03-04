@@ -64,14 +64,13 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -111,6 +110,7 @@ if SUPABASE_HOST and SUPABASE_DB and SUPABASE_USER and SUPABASE_PASSWORD:
             'PASSWORD': SUPABASE_PASSWORD,
             'HOST': SUPABASE_HOST,
             'PORT': SUPABASE_PORT,
+            'CONN_MAX_AGE': 600,  # Reuse DB connections for 10 min (avoids reconnecting to Supabase each request)
             'OPTIONS': {
                 'sslmode': 'require' if SUPABASE_USE_SSL else 'disable',
             },
@@ -139,6 +139,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # Gzip/Brotli compress static files
 
 # Media files - Not needed since resumes are stored in database rows as BinaryField
 # Keep minimal media settings for any other future file uploads
@@ -156,6 +157,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',  # Allow public read access, individual views control write access
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,  # Return 20 results per page instead of all records
 }
 
 

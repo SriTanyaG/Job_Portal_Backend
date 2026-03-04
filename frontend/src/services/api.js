@@ -16,12 +16,12 @@ api.interceptors.request.use((config) => {
     // Token is already base64 encoded (email:password)
     config.headers.Authorization = `Basic ${token}`
   }
-  
+
   // If data is FormData, remove Content-Type to let axios set it with boundary
   if (config.data instanceof FormData) {
     delete config.headers['Content-Type']
   }
-  
+
   return config
 })
 
@@ -50,9 +50,10 @@ export const authAPI = {
 
 // Jobs API
 export const jobsAPI = {
-  getAll: async () => {
-    const response = await api.get('/jobs/')
-    return response.data
+  getAll: async (params = {}) => {
+    const response = await api.get('/jobs/', { params })
+    // Handle paginated response from DRF
+    return response.data.results || response.data
   },
 
   getById: async (id) => {
@@ -78,9 +79,10 @@ export const jobsAPI = {
 
 // Applications API
 export const applicationsAPI = {
-  getAll: async () => {
-    const response = await api.get('/applications/')
-    return response.data
+  getAll: async (params = {}) => {
+    const response = await api.get('/applications/', { params })
+    // Handle paginated response from DRF
+    return response.data.results || response.data
   },
 
   getById: async (id) => {
