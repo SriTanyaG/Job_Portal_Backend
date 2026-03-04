@@ -15,9 +15,10 @@ const JobCard = ({ job }) => {
     const date = new Date(dateString)
     const now = new Date()
     const diffTime = Math.abs(now - date)
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    
-    if (diffDays === 1) return 'Posted today'
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+
+    if (diffDays === 0) return 'Posted today'
+    if (diffDays === 1) return 'Posted yesterday'
     if (diffDays < 7) return `Posted ${diffDays} days ago`
     if (diffDays < 30) return `Posted ${Math.floor(diffDays / 7)} weeks ago`
     return `Posted ${Math.floor(diffDays / 30)} months ago`
@@ -29,22 +30,21 @@ const JobCard = ({ job }) => {
         <h3 className="job-title">{job.title}</h3>
         <span className="job-salary">{formatSalary(job.salary)}</span>
       </div>
-      
+
       <div className="job-card-body">
         <p className="job-description">
           {job.description.length > 150
             ? `${job.description.substring(0, 150)}...`
             : job.description}
         </p>
-        
+
         <div className="job-meta">
           <span className="job-location">📍 {job.location}</span>
           <span className="job-date">{formatDate(job.posted_at)}</span>
         </div>
       </div>
-      
+
       <div className="job-card-footer">
-        <span className="job-type-badge">Full-time</span>
         <span className="job-arrow">→</span>
       </div>
     </Link>

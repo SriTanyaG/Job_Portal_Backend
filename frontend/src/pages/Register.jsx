@@ -10,7 +10,7 @@ const Register = () => {
   const [isEmployer, setIsEmployer] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  
+
   const { register } = useAuth()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -38,14 +38,14 @@ const Register = () => {
 
     setLoading(true)
 
-    const result = await register(email, password, isEmployer, !isEmployer)
-    
+    const result = await register(email, password, isEmployer, true)
+
     if (result.success) {
       navigate('/dashboard')
     } else {
       setError(result.error)
     }
-    
+
     setLoading(false)
   }
 

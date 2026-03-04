@@ -16,6 +16,7 @@ class JobViewSet(viewsets.ModelViewSet):
     queryset = Job.objects.all()
     serializer_class = JobSerializer
     permission_classes = [IsJobOwnerOrReadOnly]
+    pagination_class = None  # Disable pagination — Home page shows all jobs
 
     def get_queryset(self):
         """Optimize queryset with select_related and support server-side filtering"""

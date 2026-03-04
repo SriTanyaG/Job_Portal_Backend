@@ -37,7 +37,9 @@ const Dashboard = () => {
       if (isEmployer()) {
         // Server-side filter: only fetch this employer's jobs (not all jobs)
         const jobsData = await jobsAPI.getAll({ employer: user.id })
-        setJobs(jobsData)
+        // Client-side filter as safety net (in case backend filter isn't active yet)
+        const myJobs = Array.isArray(jobsData) ? jobsData.filter((job) => job.employer === user.id) : []
+        setJobs(myJobs)
 
         // Fetch applications for employer's jobs
         const appsData = await applicationsAPI.getAll()

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { jobsAPI, applicationsAPI } from '../services/api'
@@ -14,11 +14,7 @@ const JobDetail = () => {
   const [applying, setApplying] = useState(false)
   const [resume, setResume] = useState(null)
 
-  useEffect(() => {
-    fetchJob()
-  }, [id])
-
-  const fetchJob = async () => {
+  const fetchJob = useCallback(async () => {
     try {
       setLoading(true)
       const data = await jobsAPI.getById(id)
@@ -30,11 +26,17 @@ const JobDetail = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [id])
+
+  useEffect(() => {
+    fetchJob()
+  }, [fetchJob])
+
+
 
   const handleApply = async (e) => {
     e.preventDefault()
-    
+
     if (!isAuthenticated) {
       navigate('/login')
       return
@@ -60,7 +62,7 @@ const JobDetail = () => {
       navigate('/dashboard')
     } catch (error) {
       let errorMessage = 'Failed to submit application. Please try again.'
-      
+
       if (error.response?.data) {
         // Check for duplicate application error
         if (error.response.data.job && Array.isArray(error.response.data.job)) {
@@ -75,7 +77,7 @@ const JobDetail = () => {
       } else if (error.message) {
         errorMessage = error.message
       }
-      
+
       alert(errorMessage)
       console.error('Error applying:', error.response?.data || error)
     } finally {

@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .serializers import (
@@ -67,20 +68,27 @@ class RegisterView(APIView):
         if user.is_applicant:
             role.append('applicant')
         
+        # Generate JWT tokens for auto-login after registration
+        refresh = RefreshToken.for_user(user)
+        
         return Response({
             'message': 'User created successfully',
             'user_id': user.id,
             'email': user.email,
-            'role': role
+            'role': role,
+            'tokens': {
+                'access': str(refresh.access_token),
+                'refresh': str(refresh),
+            }
         }, status=201)
 
 
 class LoginView(APIView):
     """
-    Authenticate a user and return login status.
+    Authenticate a user and return JWT tokens.
     
-    Authenticate a user with their email and password. Returns user information
-    including their role(s) upon successful authentication.
+    Authenticate a user with their email and password. Returns JWT access
+    and refresh tokens along with user information upon successful authentication.
     """
     
     @swagger_auto_schema(
@@ -90,7 +98,7 @@ class LoginView(APIView):
             400: openapi.Response('Bad Request - Missing email or password'),
             401: openapi.Response('Unauthorized - Invalid credentials')
         },
-        operation_description="Authenticate a user and return login status with user information",
+        operation_description="Authenticate a user and return JWT tokens with user information",
         operation_summary="User login"
     )
     def post(self, request):
@@ -112,11 +120,18 @@ class LoginView(APIView):
             if user.is_applicant:
                 role.append('applicant')
             
+            # Generate JWT tokens
+            refresh = RefreshToken.for_user(user)
+            
             return Response({
                 'message': 'Login successful',
                 'user_id': user.id,
                 'email': user.email,
-                'role': role
+                'role': role,
+                'tokens': {
+                    'access': str(refresh.access_token),
+                    'refresh': str(refresh),
+                }
             }, status=200)
         
         return Response(
